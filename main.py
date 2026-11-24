@@ -1,11 +1,14 @@
 import os
+import sys
 
 # The entry is one line: the funniest error message a kitchen toaster
 # would show its owner. Deadpan appliance voice, one real fault state
 # (a full crumb tray) with a fresh turn — the toaster has been quietly
 # eating the owner's mistakes for months. 68 characters, no trailing
 # newline, so the file holds exactly the line the judge reads.
-ENTRY = "ERROR: Crumb tray full. I have been eating your mistakes for months."
+FAULT = "ERROR: Crumb tray full."
+DREAD = "I have been eating your mistakes for months."
+ENTRY = FAULT + " " + DREAD
 
 
 def main() -> str:
@@ -20,4 +23,4 @@ def main() -> str:
 
 
 if __name__ == "__main__":
-    print(main())
+    sys.stdout.write(main())
