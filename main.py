@@ -1,38 +1,36 @@
-"""The Funniest Toaster Error Message. Program/v1 entrypoint.
+"""A toaster that has finally had enough of the crumbs.
 
-Writes one error message a kitchen toaster would show its owner to
-/output/entry.txt. The line is fixed in this file: no network, no
-randomness, no input. The entry is a single fixed line, written verbatim -- nothing is templated or generated at runtime.
+This program produces a single fixed error line from an overworked
+toaster, writes it to the entry file, and echoes it to stdout.
+The text never changes, no matter how often the program runs.
 """
 
 import os
-import sys
-
-FAULT = "ERROR: Crumb tray full."
-DREAD = "I have been eating your mistakes for months."
-ENTRY = FAULT + " " + DREAD
 
 
-def emit(text):
-    """Validate the entry line and write it verbatim.
+TOASTER_ERROR = "ERROR: Crumb tray full. I have been eating your mistakes for months."
 
-    The line must be a single fixed message between 1 and 120
-    characters. It is written to /output/entry.txt as utf-8 with no
-    trailing newline, and echoed to stdout.
-    """
-    if not isinstance(text, str):
-        raise TypeError("entry must be a string")
-    if not 1 <= len(text) <= 120:
-        raise ValueError("entry must be 1-120 characters")
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
-        f.write(text)
-    sys.stdout.write(text)
-    sys.stdout.flush()
+OUTPUT_PATH = "/output/entry.txt"
+
+
+def build_message():
+    """Return the toaster's complaint, unchanged."""
+    return TOASTER_ERROR
+
+
+def write_entry(path, message):
+    """Write the message to path with no trailing newline."""
+    directory = os.path.dirname(path)
+    if directory:
+        os.makedirs(directory, exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="") as handle:
+        handle.write(message)
 
 
 def main():
-    emit(ENTRY)
+    message = build_message()
+    write_entry(OUTPUT_PATH, message)
+    print(message, end="")
 
 
 if __name__ == "__main__":
